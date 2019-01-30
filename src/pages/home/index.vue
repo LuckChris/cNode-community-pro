@@ -16,10 +16,15 @@
                     </div>
                 </div>
             </div>
-            <div class="home-page"> </div>
+            <div class="home-page">
+                <content-left class="left"></content-left>
+                <content-right class='right'></content-right>
+            </div>
     </div>
 </template>
 <script>
+import ContentLeft from './home-left'
+import ContentRight from './home-right'
 export default {
   data () {
     return {
@@ -36,7 +41,8 @@ export default {
       ]
 
     }
-  }
+  },
+  components: {ContentLeft, ContentRight}
 }
 </script>
 <style lang="less">
@@ -45,11 +51,21 @@ export default {
     width: 100%;
     height: 100%;
     .home-page{
-        width: 80%;
+        width: 75%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-around;
+        // align-items: center;
+        .left{
+            flex: 3;
+        }
+        .right{
+            flex: 1;
+        }
     }
     .top-content{
         width: 100%;
-        height: 54px;
+        padding: 5px 0;
         background-color: @primary-color;
         color: #fff;
         .content{
@@ -58,6 +74,7 @@ export default {
             line-height: 54px;
             margin: 0 auto;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             .left-content{
@@ -69,7 +86,7 @@ export default {
                     img{
                         width: 45px;
                         height: 45px;
-                        vertical-align: bottom;
+                        vertical-align: middle;
                     }
                     span{
                         font-weight: bold;
