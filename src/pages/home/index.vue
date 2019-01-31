@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="home-page">
-                <content-left class="left"></content-left>
+                <content-left class="left" :list = 'leftContentList'></content-left>
                 <content-right class='right'></content-right>
             </div>
     </div>
@@ -25,6 +25,7 @@
 <script>
 import ContentLeft from './home-left'
 import ContentRight from './home-right'
+import {api} from '@/utils/api'
 export default {
   data () {
     return {
@@ -38,11 +39,22 @@ export default {
         {name: '注册', id: 7},
         {name: '登录', id: 8}
 
-      ]
+      ],
+      leftContentList: []
 
     }
   },
-  components: {ContentLeft, ContentRight}
+  components: {ContentLeft, ContentRight},
+  created () {
+    this.getList()
+  },
+  methods: {
+    async getList () {
+      let res = await api.get('topics')
+      this.leftContentList = res.data.data
+    }
+
+  }
 }
 </script>
 <style lang="less">
@@ -51,7 +63,7 @@ export default {
     width: 100%;
     height: 100%;
     .home-page{
-        width: 75%;
+        width: 80%;
         margin: 0 auto;
         display: flex;
         justify-content: space-around;
