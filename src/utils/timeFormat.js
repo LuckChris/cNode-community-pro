@@ -4,7 +4,6 @@ function timeago (time) {
   var minute = 1000 * 60
   var hour = minute * 60
   var day = hour * 24
-  var week = day * 7
   var month = day * 30
 
   var now = new Date().getTime()
@@ -13,12 +12,9 @@ function timeago (time) {
     var minC = diffValue / minute
     var hourC = diffValue / hour
     var dayC = diffValue / day
-    var weekC = diffValue / week
     var monthC = diffValue / month
     if (monthC >= 1) {
       return parseInt(monthC) + '月前'
-    } else if (weekC >= 1) {
-      return parseInt(weekC) + '周前'
     } else if (dayC >= 1) {
       return parseInt(dayC) + '天前'
     } else if (hourC >= 1) {

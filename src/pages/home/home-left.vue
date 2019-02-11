@@ -6,8 +6,8 @@
         <div class="content">
             <ul>
                 <li class='content-list'>
-                    <div class='item-list' v-for='(i,index2) in list' :key="index2">
-                            <div class="item-left">
+                    <div class='item-list' v-for='(i,index2) in list' :key="index2" :class="{'enterColor':showColor}">
+                            <div class="item-left" >
                                 <span class='icon-img'>
                                 <img :src="i.author.avatar_url" alt="">
                                 </span>
@@ -20,7 +20,8 @@
                                 <span class='title'> {{i.title}}</span>
                             </div>
                         <div class="item-right">
-                            <!-- <p>{{timeago(i.last_reply_at)}}</p> -->
+                            <span class='right-icon'></span>
+                            <p>{{timeago(i.last_reply_at)}}</p>
                         </div>
                     </div>
 
@@ -40,14 +41,15 @@ export default {
       tabs: [
         '全部', '精华', 'weex', '分享', '问题', '招聘'
       ],
-      content: []
+      content: [],
+      showColor: false
 
     }
   },
 
   created () {
     this.content = this.list
-    this.formatTime()
+    // this.formatTime()
   },
   computed: {
     // formatTime () {
@@ -84,10 +86,32 @@ export default {
             color: #4f9639;
         }
     }
+    @media (max-width:980px) {
+        .item-list{
+           font-size: 14px;
+        }
+
+    }
+    @media (min-width:980px) {
+         .title{
+            width: 600px;
+            display: block;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+        }
+    }
     .content{
         background-color: #fff;
         li{
             border-bottom: 1px solid #f0f0f0;
+        }
+        .item-list:hover{
+                background-color: #eee;
+        }
+        .item-list:hover .title {
+            text-decoration:underline;
+
         }
         .item-list{
             padding: 10px 0;
@@ -96,18 +120,27 @@ export default {
             justify-content: space-between;
             align-items: center;
             padding-left: 10px;
-            span{
-                // padding-left: 10px;
-            }
+            cursor: pointer;
             .item-left{
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
             }
+
             .item-right{
                 // text-align: right;
                 padding-right: 10px;
                 font-size: 11px;
+                display: flex;
+                .right-icon{
+                    display: inline-block;
+                    width: 20px;
+                    height: 20px;
+                    background-color: #ab78c4;
+                }
+                p{
+                    padding-left: 20px;
+                }
             }
             .icon-img{
               display: inline-block;
