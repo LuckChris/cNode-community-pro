@@ -30,7 +30,11 @@ export default {
   },
   methods: {
     async getList () {
-      let res = await api.get('topics')
+      let res = await api.get('topics', {
+        'page': 1,
+        'limit': 20,
+        'mdrender': true
+      })
       this.leftContentList = res.data.data
     }
 

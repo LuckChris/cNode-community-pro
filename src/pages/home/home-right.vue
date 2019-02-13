@@ -106,9 +106,7 @@ export default {
     }
     .ad,.no-reply-topic,.integral,.club-communication,.friendly-club{
         width: 290px;
-        // height: 125px;
         background-color: #fff;
-        // border-radius: 8px;
         margin :15px auto;
 
     }

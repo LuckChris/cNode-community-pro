@@ -4,6 +4,7 @@ import Home from '@/pages/home'
 import Singin from '@/pages/singin'
 import Singup from '@/pages/singup'
 import About from '@/pages/about'
+import Detail from '@/pages/detail'
 
 Vue.use(Router)
 
@@ -11,7 +12,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
+      name: 'home',
       component: Home
     },
     {
@@ -28,6 +29,11 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: About
+    },
+    {
+      path: '/detail/:id',
+      name: 'detail',
+      component: Detail
     }
   ]
 })

@@ -6,7 +6,7 @@
         <div class="content">
             <ul>
                 <li class='content-list'>
-                    <div class='item-list' v-for='(i,index2) in list' :key="index2" :class="{'enterColor':showColor}">
+                    <div class='item-list' v-for='(i,index2) in list' :key="index2" :class="{'enterColor':showColor}" @click='itemDetail(i.id)'>
                             <div class="item-left" >
                                 <span class='icon-img'>
                                 <img :src="i.author.avatar_url" alt="">
@@ -64,12 +64,10 @@ export default {
     changeTab (index) {
       console.log(index)
       this.showTabsContent = index
+    },
+    itemDetail (id) {
+      this.$router.push({name: 'detail', params: {id: id}})
     }
-    // formatTime () {
-    //   this.list.forEach(item => {
-    //     console.log(this.timeago(item.last_reply_at), '22222')
-    //   })
-    // }
   }
 }
 </script>

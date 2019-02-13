@@ -55,7 +55,7 @@ export default {
   methods: {
     clickHandle (id) {
       if (id === 1) {
-        window.location.reload()
+        this.$router.push({name: 'home'})
       } else if (id === 2) {
         this.showErCode = true
       } else if (id === 3) {

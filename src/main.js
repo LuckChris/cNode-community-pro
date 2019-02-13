@@ -5,11 +5,13 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import {timeago} from '@/utils/timeFormat'
+import {api} from '@/utils/api'
 
 Vue.config.productionTip = false
 
 Vue.prototype.$axios = axios
 Vue.prototype.timeago = timeago
+Vue.prototype.$api = api
 
 /* eslint-disable no-new */
 new Vue({

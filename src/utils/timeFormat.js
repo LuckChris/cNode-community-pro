@@ -14,7 +14,7 @@ function timeago (time) {
     var dayC = diffValue / day
     var monthC = diffValue / month
     if (monthC >= 1) {
-      return parseInt(monthC) + '月前'
+      return parseInt(monthC) + '个月前'
     } else if (dayC >= 1) {
       return parseInt(dayC) + '天前'
     } else if (hourC >= 1) {
