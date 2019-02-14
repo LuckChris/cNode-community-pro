@@ -3,24 +3,46 @@
         <head-content></head-content>
         <div class="allContent">
             <div class="left">
-                <div class="header-content">
-                    <span class='top-text' v-if='content.top'>置顶</span>
-                    <p>{{content.title}}</p>
-                    <ul>
-                        <li>发布于{{createTime}}</li>
-                        <li>作者  {{content.author.loginname}}</li>
-                        <li>{{content.visit_count}}次浏览</li>
-                        <li>来自{{originText}}</li>
-                    </ul>
+                <div class="left-top">
+                    <div class="header-content">
+                        <span class='top-text' v-if='content.top'>置顶</span>
+                        <p>{{content.title}}</p>
+                        <ul>
+                            <li>发布于{{createTime}}</li>
+                            <li>作者  {{content.author.loginname}}</li>
+                            <li>{{content.visit_count}}次浏览</li>
+                            <li>来自{{originText}}</li>
+                        </ul>
 
+                    </div>
+                    <div class="left-detail" >
+                        <div class="fans-welfare">
+                            <p>粉丝福利：关注VUE中文社区公众号，回复视频领取粉丝福利</p>
+                        </div>
+                        <div class="inner" v-html='content.content'>
+                        </div>
+                    </div>
                 </div>
-                <div class="left-detail" >
-                    <div class="fans-welfare">
-                        <p>粉丝福利：关注VUE中文社区公众号，回复视频领取粉丝福利</p>
+                <div class="replies">
+                    <p class='reply-title'>{{content.replies.length}}回复</p>
+                    <ul>
+                        <li v-for='(item,index) in content.replies' :key="index">
+                            <img :src="item.author.avatar_url" alt="">
+                            <span>{{item.author.loginname}}</span>
+                            <span>{{index+1}}楼</span>
+                            <span>{{timeago(item.create_at)}}</span>
+                            <p v-html='item.content'></p>
+                        </li>
+                    </ul>
+                    <div class="reply-box">
+                        <quill-editor
+                        v-model="replyContent"
+                        ref="myQuillEditor"
+                        :options="editorOption"
+                        @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
+                        @change="onEditorChange($event)">
+                        </quill-editor>
                     </div>
-                    <div class="inner" v-html='content.content'>
-                    </div>
-
                 </div>
             </div>
             <div class="right">
@@ -74,8 +96,15 @@ export default {
     return {
       itemId: '',
       content: '',
-      authorInfo: ''
-
+      authorInfo: '',
+      replyContent: null,
+      editorOption: {
+        modules: {
+          toolbar: [
+            ['bold', {'color': []}, 'italic', 'blockquote', 'underline', {'list': 'ordered'}, { 'list': 'bullet' }, 'link', 'image', 'code-block'] // toggled buttons
+          ]
+        }
+      }
     }
   },
   components: {HeadContent},
@@ -90,6 +119,15 @@ export default {
     } catch (error) {
 
     }
+  },
+  methods: {
+    onEditorBlur () { // 失去焦点事件
+    },
+    onEditorFocus () { // 获得焦点事件
+    },
+    onEditorChange () { // 内容改变事件
+    }
+
   },
   computed: {
     originText () {
@@ -120,9 +158,39 @@ export default {
         justify-content: space-between;
 
         .left{
-            background-color: #fff;
+            // background-color: #fff;
             padding: 20px;
-
+            .left-top{
+                padding: 20px;
+                background-color: #fff;
+            }
+            .replies{
+                margin-top: 20px;
+                background-color: #fff;
+                .reply-title{
+                    background-color: #f6f6f6;
+                    font-size: 13px;
+                    color: #1c6132;
+                    padding: 10px;
+                }
+                ul li{
+                    padding: 10px;
+                    img{
+                        width: 30px;
+                        height: 30px;
+                        vertical-align: middle;
+                    }
+                    span{
+                        padding-left: 5px;
+                    }
+                    p{
+                        color: #333;
+                        font-size: 15px;
+                        padding-top: 10px;
+                        padding-left: 20px;
+                    }
+                }
+            }
         }
         .right{
             margin-left: 10px;

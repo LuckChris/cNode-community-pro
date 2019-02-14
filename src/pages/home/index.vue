@@ -2,7 +2,7 @@
     <div class='home-page-wrapper'>
             <head-content></head-content>
             <div class="home-page">
-                <content-left class="left" :list = 'leftContentList'></content-left>
+                <content-left class="left"></content-left>
                 <content-right class='right'></content-right>
             </div>
             <div class="foot-content">
@@ -16,27 +16,27 @@
 import ContentLeft from './home-left'
 import ContentRight from './home-right'
 import HeadContent from '@/components/head'
-import {api} from '@/utils/api'
+// import {api} from '@/utils/api'
 export default {
   data () {
     return {
-      leftContentList: []
+    //   leftContentList: []
 
     }
   },
   components: {ContentLeft, ContentRight, HeadContent},
   created () {
-    this.getList()
+    // this.getList()
   },
   methods: {
-    async getList () {
-      let res = await api.get('topics', {
-        'page': 1,
-        'limit': 20,
-        'mdrender': true
-      })
-      this.leftContentList = res.data.data
-    }
+    // async getList () {
+    //   let res = await api.get('topics', {
+    //     'page': 1,
+    //     'limit': 20,
+    //     'mdrender': true
+    //   })
+    //   this.leftContentList = res.data.data
+    // }
 
   }
 }
