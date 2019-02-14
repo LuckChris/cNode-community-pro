@@ -29,8 +29,8 @@
                         <li v-for='(item,index) in content.replies' :key="index">
                             <img :src="item.author.avatar_url" alt="">
                             <span>{{item.author.loginname}}</span>
-                            <span>{{index+1}}楼</span>
-                            <span>{{timeago(item.create_at)}}</span>
+                            <span class='blue-color step'>{{index+1}}楼</span>
+                            <span class='blue-color'>{{timeago(item.create_at)}}</span>
                             <p v-html='item.content'></p>
                         </li>
                     </ul>
@@ -175,6 +175,7 @@ export default {
                 }
                 ul li{
                     padding: 10px;
+                    border-bottom: 1px solid #e5e5e5;
                     img{
                         width: 30px;
                         height: 30px;
@@ -188,6 +189,27 @@ export default {
                         font-size: 15px;
                         padding-top: 10px;
                         padding-left: 20px;
+                    }
+                    .blue-color{
+                        color: #08c;
+                        font-size: 11px;
+
+                    }
+                     .step{
+                        position: relative;
+
+                     }
+                    .step:after{
+                        content: '';
+                        width: 6px;
+                        height: 6px;
+                        background-color: #08c;
+                        border-radius: 50%;
+                        position: absolute;
+                        left: 110%;
+                        top: 50%;
+                        transform: translateY(-50%)
+
                     }
                 }
             }
