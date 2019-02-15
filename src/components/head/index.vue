@@ -8,11 +8,13 @@
                             <span>Vue.js</span>
                         </div>
                         <div class="search">
-                            <input type="text">
+                            <input type="text" class='input-box'>
                         </div>
                     </div>
                     <div class="right-content">
                         <span v-for='(item,index) in list' :key="index" @click='clickHandle(item.id)'> {{item.name}}</span>
+                        <span>设置</span>
+                        <span>退出</span>
                     </div>
                 </div>
             </div>
@@ -30,7 +32,6 @@
                     </div>
                 </div>
             </div>
-
     </div>
 </template>
 <script>
@@ -46,15 +47,14 @@ export default {
         {name: '关于', id: 6},
         {name: '注册', id: 7},
         {name: '登录', id: 8}
-
       ],
       showErCode: false
-
     }
   },
   methods: {
     clickHandle (id) {
       if (id === 1) {
+        window.location.reload()
         this.$router.push({name: 'home'})
       } else if (id === 2) {
         this.showErCode = true
@@ -76,7 +76,6 @@ export default {
       this.showErCode = false
     }
   }
-
 }
 </script>
 <style lang="less">
@@ -122,7 +121,6 @@ export default {
                 }
             }
         }
-
     }
      .top-content{
         width: 100%;
@@ -162,6 +160,15 @@ export default {
                         border: none;
                         border-radius: 16px;
                         background-color: #4f9639;
+                        padding-left: 20px;
+                        font-size: 13px;
+                        color: #666;
+                    }
+                    input:focus,input:hover{
+                        background-color: #fff;
+                    }
+                    input:blur{
+                        background-color: #4f9639;
                     }
                 }
             }
@@ -171,6 +178,9 @@ export default {
                     font-size: 14px;
                     color: #eee;
                     cursor: pointer;
+                }
+                span:hover{
+                    color: #fff;
                 }
             }
         }

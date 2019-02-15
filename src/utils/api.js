@@ -23,7 +23,7 @@ const api = {
     try {
       url = commonUrl + url
       let res = await axios.post(url, qs.stringify(data))
-      res = res.data
+      // res = res.data
       return new Promise((resolve, reject) => {
         if (res.status === 200) {
           resolve(res)

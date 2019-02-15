@@ -1,6 +1,6 @@
 <template>
     <div class='right-content-wrapper'>
-       <div class="login">
+       <div class="login"  v-if='!showUerInfo'>
            <div class="title">vue：vue.js专业中文社区</div>
            <div class='login-tips'>您可以
                <router-link to='singin'>登录</router-link>
@@ -9,6 +9,16 @@
                <span>也可以</span>
                <span class='login-btn'>通过github登录</span>
            </div>
+       </div>
+       <div class="has-login" v-if='showUerInfo'>
+           <p class='head-title'>个人信息</p>
+           <div class="info">
+               <img src="" alt="">
+               <span>那还是</span>
+               <p class='num'>hdadsvg</p>
+               <p class='sign'>“ 这家伙很懒，什么个性签名都没有留下。”</p>
+           </div>
+
        </div>
        <div class="ad">
            <img onclick="_hmt.push(['_trackEvent','zhufeng', 'advs', 'click']);window.location.href='http://www.zhufengpeixun.cn/main/course/index.html?ref=zb'" src="http://static.vue-js.com/FgEKlBDltzGKmDGkAq5zxSxt8kga" alt="">
@@ -58,6 +68,7 @@
 </template>
 <script>
 import {api} from '@/utils/api'
+import Bus from '@/components/bus.js'
 export default {
   data () {
     return {
@@ -68,12 +79,16 @@ export default {
         {title: '  汇智网', link: 'https://www.hubwiz.com/'},
         {title: '  w3c社区-前端专业综合性技术交流平台', link: 'https://w3cfe.org/'},
         {title: '  掘金-帮助开发者成长的社区', link: 'https://juejin.im/'}
-      ]
+      ],
+      showUerInfo: false
 
     }
   },
   created () {
     this.getNoReplyTopics()
+    Bus.$on('login-success', (content) => {
+      this.showUerInfo = content
+    })
   },
   methods: {
     async getNoReplyTopics () {
@@ -104,7 +119,23 @@ export default {
         }
 
     }
-    .ad,.no-reply-topic,.integral,.club-communication,.friendly-club{
+    .has-login{
+        .info{
+            padding: 10px;
+            font-size: 14px;
+            .sign{
+                font-size: 13px;
+                color: #333;
+                font-style: italic;
+                padding-top: 10px;
+            }
+            .num{
+                padding-top: 10px;
+            }
+        }
+
+    }
+    .ad,.no-reply-topic,.integral,.club-communication,.friendly-club,.has-login{
         width: 290px;
         background-color: #fff;
         margin :15px auto;

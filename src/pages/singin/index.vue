@@ -14,7 +14,7 @@
                         <input type="text" class='input-box' v-model="pwdValue">
                     </div> -->
                     <div class="bottom-btn">
-                        <span class='register' @click.stop='goLogin'>登录</span>
+                        <span class='register' @click='goLogin'>登录</span>
                         <span class='github'>通过GitHub登录</span>
                         <span class='no-pwd'>忘记密码了？</span>
                     </div>
@@ -22,7 +22,8 @@
                 </div>
             </div>
             <div class="right-about">
-                <p class='primary-color title'>关于</p>
+                <p class='primary-color title'>提示</p>
+                <p>assess token 是通过github账号关联绑定得到的</p>
             </div>
         </div>
 
@@ -30,11 +31,13 @@
 </template>
 <script>
 import HeadContent from '@/components/head'
+import Bus from '@/components/bus.js'
 export default {
   data () {
     return {
       userName: '',
-      pwdValue: ''
+      pwdValue: '',
+      hasLogin: false
 
     }
   },
@@ -45,12 +48,17 @@ export default {
         window.alert('用户名不能为空')
       } else {
         try {
-          await this.$api.post('accesstoken', {
+          let res = await this.$api.post('accesstoken', {
             accesstoken: this.userName
           })
-          this.$router.push({name: 'home'})
+          if (res.status === 200) {
+            this.hasLogin = true
+            Bus.$emit('login-success', this.hasLogin)
+            this.$router.push({name: 'home'})
+          }
         } catch (error) {
-          alert('assess token 输入错误')
+          console.log(error)
+          window.alert('assess token 输入错误')
           this.userName = ''
         }
       }

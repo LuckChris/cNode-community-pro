@@ -16,27 +16,15 @@
 import ContentLeft from './home-left'
 import ContentRight from './home-right'
 import HeadContent from '@/components/head'
-// import {api} from '@/utils/api'
+
 export default {
   data () {
     return {
-    //   leftContentList: []
 
     }
   },
   components: {ContentLeft, ContentRight, HeadContent},
   created () {
-    // this.getList()
-  },
-  methods: {
-    // async getList () {
-    //   let res = await api.get('topics', {
-    //     'page': 1,
-    //     'limit': 20,
-    //     'mdrender': true
-    //   })
-    //   this.leftContentList = res.data.data
-    // }
 
   }
 }

@@ -1,7 +1,11 @@
 <template>
     <div class='left-content-wrapper'>
         <ul class='tabs'>
-            <li v-for='(item,index) in tabs' :key="index" @click='changeTab(item.id)'>{{item.title}}</li>
+            <li v-for='(item,index) in tabs'
+            :key="index"
+            @click='changeTab(index,item.tab)'
+            :class="{'selected':selectId === index}"
+            >{{item.title}}</li>
         </ul>
         <div class="content">
             <ul>
@@ -23,7 +27,7 @@
                                 <span class='title'> {{i.title}}</span>
                             </div>
                         <div class="item-right">
-                            <span class='right-icon'></span>
+                            <!-- <span class='right-icon'></span> -->
                             <p>{{timeago(i.last_reply_at)}}</p>
                         </div>
                     </div>
@@ -31,10 +35,9 @@
                 </li>
             </ul>
         </div>
-        <div class="progration" v-if='listArray.length'>
+        <div class="progration" v-if='listArray.length && showProgration'>
             <span class='prev(10)' @click='prev'> « </span><span v-for = '(item,index) in 10' :key="index" @click='chosePage(item)'>{{item}}</span><span class='next'> » </span>
         </div>
-
     </div>
 </template>
 <script>
@@ -44,16 +47,17 @@ export default {
     return {
       showTabsContent: 0,
       tabs: [
-        {title: '全部', id: 1},
-        {title: '精华', id: 2},
-        {title: 'weex', id: 3},
-        {title: '分享', id: 4},
-        {title: '问题', id: 5},
-        {title: '招聘', id: 6}
+        {title: '全部', id: 1, tab: 'all'},
+        {title: '精华', id: 2, tab: 'good'},
+        {title: 'weex', id: 3, tab: 'weex'},
+        {title: '分享', id: 4, tab: 'share'},
+        {title: '问题', id: 5, tab: 'ask'},
+        {title: '招聘', id: 6, tab: 'job'}
       ],
       showColor: false,
       allList: [],
-      tabId: 1,
+      tabType: 'all',
+      selectId: 0,
       shareList: [],
       askList: [],
       jobList: [],
@@ -61,7 +65,8 @@ export default {
       ary2: [],
       ary3: [],
       array: [],
-      goodLists: []
+      goodLists: [],
+      allListData: [] // 总的数据
 
     }
   },
@@ -71,27 +76,30 @@ export default {
   },
   computed: {
     listArray () {
-      if (this.tabId === 1) {
+      if (this.tabType === 'all') {
         return this.allList
-      } else if (this.tabId === 2) {
+      } else if (this.tabType === 'share' || this.tabType === 'ask' || this.tabType === 'job') {
+        return this.allListData
+      } else if (this.tabType === 'good') {
         return this.goodLists
-      } else if (this.tabId === 3) {
+      } else if (this.tabType === 'weex') {
         return []
-      } else if (this.tabId === 4) {
-        return this.shareList
-      } else if (this.tabId === 5) {
-        return this.askList
+      }
+    },
+    showProgration () {
+      if (this.tabType === 'good' || this.tabType === 'job') {
+        return false
       } else {
-        return this.jobList
+        return true
       }
     }
-
   },
 
   methods: {
-    async changeTab (id) {
-      this.tabId = id
-      if (id === 2) {
+    async changeTab (id, tab) {
+      this.selectId = id
+      this.tabType = tab
+      if (tab === 'good') {
         await this.getGoodList(2)
         await this.getGoodList(5)
         await this.getGoodList(6)
@@ -102,12 +110,8 @@ export default {
             this.goodLists.push(item)
           }
         })
-      } else if (id === 4) {
-        this.getAllList('share', 1)
-      } else if (id === 5) {
-        this.getAllList('ask', 1)
-      } else if (id === 6) {
-        this.getAllList('job', 1)
+      } else {
+        this.getAllList(tab)
       }
     },
     chosePage (page) {
@@ -134,25 +138,23 @@ export default {
         console.log(error)
       }
     },
-    async getAllList (type, page) {
+    async getAllList (tab) {
       try {
         let res = await this.$api.get('topics', {
-          'page': page,
+          'page': 1,
           'limit': 20,
-          'tab': type,
+          'tab': tab === 'share' ? 'share' : tab === 'ask' ? 'ask' : tab === 'job' ? 'job' : '',
           'mdrender': true
         })
-        if (type === 'share') {
-          this.shareList = res.data.data
-        } else if (type === 'ask') {
-          this.askList = res.data.data
-        } else if (type === 'job') {
-          this.jobList = []
+        if (tab === 'job') {
+          this.allListData = []
           res.data.data.forEach(item => {
             if (item.author.loginname) {
-              this.jobList.push(item)
+              this.allListData.push(item)
             }
           })
+        } else {
+          this.allListData = res.data.data
         }
       } catch (e) {
         console.log(e)
@@ -169,23 +171,32 @@ export default {
       })
       this.allList = res.data.data
     }
-
   }
 }
 </script>
 <style lang="less">
 .left-content-wrapper{
-    // background-color: #fff;
+    margin-top: 20px;
     .tabs{
         display: flex;
         justify-content: flex-start;
         align-items: center;
         background-color: #f6f6f6;
         li{
-            padding: 10px 0;
-            padding-left: 30px;
+            padding: 10px;
+            // padding-left: 30px;
+            margin-left: 30px;
             color: #4f9639;
             cursor: pointer;
+            font-size: 14px;
+            text-align: center;
+        }
+        .selected{
+            background-color: #369219;
+            color: #fff;
+            padding: 3px 4px;
+            border-radius: 3px;
+            text-align: center;
         }
     }
     @media (max-width:980px) {
@@ -244,6 +255,7 @@ export default {
                 padding-right: 10px;
                 font-size: 11px;
                 display: flex;
+                width: 80px;
                 .right-icon{
                     display: inline-block;
                     width: 20px;
