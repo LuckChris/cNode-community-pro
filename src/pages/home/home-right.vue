@@ -87,6 +87,7 @@ export default {
   created () {
     this.getNoReplyTopics()
     Bus.$on('login-success', (content) => {
+      console.log(content + '登录成功')
       this.showUerInfo = content
     })
   },
