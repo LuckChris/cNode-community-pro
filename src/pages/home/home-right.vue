@@ -13,9 +13,9 @@
        <div class="has-login" v-if='showUerInfo'>
            <p class='head-title'>个人信息</p>
            <div class="info">
-               <img src="" alt="">
-               <span>那还是</span>
-               <p class='num'>hdadsvg</p>
+               <img :src="userInfo.avatar_url" alt="">
+               <span class='login-name'>{{userInfo.loginname}}</span>
+               <p class='num'>积分:{{userInfo.score}}</p>
                <p class='sign'>“ 这家伙很懒，什么个性签名都没有留下。”</p>
            </div>
 
@@ -68,7 +68,6 @@
 </template>
 <script>
 import {api} from '@/utils/api'
-import Bus from '@/components/bus.js'
 export default {
   data () {
     return {
@@ -80,16 +79,19 @@ export default {
         {title: '  w3c社区-前端专业综合性技术交流平台', link: 'https://w3cfe.org/'},
         {title: '  掘金-帮助开发者成长的社区', link: 'https://juejin.im/'}
       ],
-      showUerInfo: false
+      showUerInfo: false,
+      userInfo: '',
+      userName: ''
 
     }
   },
-  created () {
+  async created () {
     this.getNoReplyTopics()
-    Bus.$on('login-success', (content) => {
-      console.log(content + '登录成功')
-      this.showUerInfo = content
-    })
+    this.showUerInfo = this.$store.getters.isLogin
+    this.userName = sessionStorage.getItem('userInfo')
+    let res = await this.$api.get(`user/${this.userName}`)
+    this.userInfo = res.data.data
+    console.log(this.userInfo)
   },
   methods: {
     async getNoReplyTopics () {
@@ -100,6 +102,7 @@ export default {
         }
       })
     }
+
   }
 }
 </script>
@@ -124,6 +127,14 @@ export default {
         .info{
             padding: 10px;
             font-size: 14px;
+            img{
+                width: 48px;
+                height: 48px;
+                vertical-align: middle;
+            }
+            .login-name{
+                padding-left: 5px;
+            }
             .sign{
                 font-size: 13px;
                 color: #333;

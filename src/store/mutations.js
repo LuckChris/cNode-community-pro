@@ -1,8 +1,10 @@
-const INITIALZE_DATA = 'INITIALZE_DATA'
-
-export default {
-  [INITIALZE_DATA] (state, flag) {
-    state.loginFlag = flag
-  }
-
-}
+// export const userStatus = (state, user) => {
+//   if (user) {
+//     state.currentUser = user
+//     state.isLogin = true
+//   } else if (user == null) {
+//     sessionStorage.setItem('userName', null)
+//     state.currentUser == null
+//     state.isLogin == false
+//   }
+// }

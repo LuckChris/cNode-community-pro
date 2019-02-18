@@ -13,8 +13,15 @@
                     </div>
                     <div class="right-content">
                         <span v-for='(item,index) in list' :key="index" @click='clickHandle(item.id)'> {{item.name}}</span>
-                        <span>设置</span>
-                        <span>退出</span>
+                        <template v-if='!hasLogin'>
+                            <span @click='toSignup'>注册</span>
+                            <span @click='toLogin'>登录</span>
+                        </template>
+                        <template v-else>
+                            <span @click='settingPage'>设置</span>
+                            <span @click="exit">退出</span>
+                        </template>
+
                     </div>
                 </div>
             </div>
@@ -35,6 +42,7 @@
     </div>
 </template>
 <script>
+import Type from '@/store/mutation-types'
 export default {
   data () {
     return {
@@ -44,12 +52,14 @@ export default {
         {name: 'VUE2.0', id: 3},
         {name: '参考资料', id: 4},
         {name: 'API', id: 5},
-        {name: '关于', id: 6},
-        {name: '注册', id: 7},
-        {name: '登录', id: 8}
+        {name: '关于', id: 6}
       ],
-      showErCode: false
+      showErCode: false,
+      hasLogin: false
     }
+  },
+  created () {
+    this.hasLogin = this.$store.getters.isLogin
   },
   methods: {
     clickHandle (id) {
@@ -66,14 +76,23 @@ export default {
         window.location.href = 'https://www.vue-js.com/api/'
       } else if (id === 6) {
         this.$router.push({name: 'about'})
-      } else if (id === 7) {
-        this.$router.push({name: 'singup'})
-      } else if (id === 8) {
-        this.$router.push({name: 'singin'})
       }
     },
     hideCodePanel () {
       this.showErCode = false
+    },
+    toLogin () {
+      this.$router.push({name: 'singin'})
+    },
+    toSignup () {
+      this.$router.push({name: 'singup'})
+    },
+    settingPage () {
+
+    },
+    exit () {
+      this.$store.dispatch(Type.EXIT_FLAG)
+      window.location.reload()
     }
   }
 }

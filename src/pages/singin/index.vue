@@ -31,8 +31,8 @@
 </template>
 <script>
 import HeadContent from '@/components/head'
-import Bus from '@/components/bus.js'
-import { mapActions } from 'vuex'
+// import Bus from '@/components/bus.js'
+import Type from '@/store/mutation-types'
 export default {
   data () {
     return {
@@ -43,7 +43,6 @@ export default {
   },
   components: { HeadContent },
   methods: {
-    ...mapActions(['changeLoginState']),
     async goLogin () {
       if (!this.userName) {
         window.alert('用户名不能为空')
@@ -54,8 +53,9 @@ export default {
           })
           if (res.status === 200) {
             this.hasLogin = true
-            // this.changeLoginState(this.hasLogin)
-            Bus.$emit('login-success', this.hasLogin)
+            this.$store.dispatch(Type.LOGIN_FLAG)
+            sessionStorage.setItem('userInfo', res.data.loginname)
+            sessionStorage.setItem('accesstoken', this.userName)
             this.$router.push({ name: 'home' })
           }
         } catch (error) {

@@ -35,6 +35,7 @@
                         </li>
                     </ul>
                     <div class="reply-box">
+                        <p class='reply-title'>添加回复</p>
                         <quill-editor
                         v-model="replyContent"
                         ref="myQuillEditor"
@@ -42,6 +43,7 @@
                         @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
                         @change="onEditorChange($event)">
                         </quill-editor>
+                        <span class='reply-btn'>回复</span>
                     </div>
                 </div>
             </div>
@@ -166,12 +168,15 @@ export default {
             }
             .replies{
                 margin-top: 20px;
-                background-color: #fff;
+                // background-color: #fff;
                 .reply-title{
                     background-color: #f6f6f6;
                     font-size: 13px;
                     color: #1c6132;
                     padding: 10px;
+                }
+                ul{
+                    background-color: #fff;
                 }
                 ul li{
                     padding: 10px;
@@ -210,6 +215,30 @@ export default {
                         top: 50%;
                         transform: translateY(-50%)
 
+                    }
+                }
+                .reply-box{
+                    background-color: #fff;
+                    margin-top: 20px;
+                    .ql-container{
+                        height: 230px;
+                        border: none;
+                    }
+                    .reply-btn{
+                        display: inline-block;
+                        color: #fff;
+                        background-color: #3374de;
+                        padding: 5px 10px;
+                        border-radius: 3px;
+                        letter-spacing: 2px;
+                        font-size: 14px;
+                        margin-left: 10px;
+                        margin-bottom: 15px;
+                        box-sizing: border-box;
+                        cursor: pointer;
+                    }
+                    .ql-editor.ql-blank::before{
+                        content:''
                     }
                 }
             }
