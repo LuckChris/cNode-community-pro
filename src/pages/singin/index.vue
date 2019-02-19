@@ -32,7 +32,7 @@
 <script>
 import HeadContent from '@/components/head'
 // import Bus from '@/components/bus.js'
-import Type from '@/store/mutation-types'
+// import Type from '@/store/mutation-types'
 export default {
   data () {
     return {
@@ -53,7 +53,7 @@ export default {
           })
           if (res.status === 200) {
             this.hasLogin = true
-            this.$store.dispatch(Type.LOGIN_FLAG)
+            this.$store.commit('hasLogin')
             sessionStorage.setItem('userInfo', res.data.loginname)
             sessionStorage.setItem('accesstoken', this.userName)
             this.$router.push({ name: 'home' })

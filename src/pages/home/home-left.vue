@@ -28,7 +28,7 @@
                             </div>
                         <div class="item-right">
                             <!-- <span class='right-icon'></span> -->
-                            <p>{{timeago(i.last_reply_at)}}</p>
+                            <p v-if='i.last_reply_at'>{{timeago(i.last_reply_at)}}</p>
                         </div>
                     </div>
 

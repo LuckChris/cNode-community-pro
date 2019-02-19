@@ -9,7 +9,7 @@
                         <p>{{content.title}}</p>
                         <ul>
                             <li>发布于{{createTime}}</li>
-                            <li>作者  {{content.author.loginname}}</li>
+                            <li v-if='content.author'>作者  {{content.author.loginname}}</li>
                             <li>{{content.visit_count}}次浏览</li>
                             <li>来自{{originText}}</li>
                         </ul>
@@ -24,26 +24,25 @@
                     </div>
                 </div>
                 <div class="replies">
-                    <p class='reply-title'>{{content.replies.length}}回复</p>
-                    <ul>
+                    <p class='reply-title' v-if='content.replies'>{{content.replies.length}}回复</p>
+                    <ul v-if='content.replies'>
                         <li v-for='(item,index) in content.replies' :key="index">
                             <img :src="item.author.avatar_url" alt="">
                             <span>{{item.author.loginname}}</span>
                             <span class='blue-color step'>{{index+1}}楼</span>
-                            <span class='blue-color'>{{timeago(item.create_at)}}</span>
+                            <span class='blue-color' v-if='item.create_at'>{{timeago(item.create_at)}}</span>
                             <p v-html='item.content'></p>
                         </li>
                     </ul>
-                    <div class="reply-box">
+                    <div class="reply-box" v-if='existUser'>
                         <p class='reply-title'>添加回复</p>
                         <quill-editor
                         v-model="replyContent"
                         ref="myQuillEditor"
                         :options="editorOption"
-                        @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
-                        @change="onEditorChange($event)">
+                        >
                         </quill-editor>
-                        <span class='reply-btn'>回复</span>
+                        <span class='reply-btn' @click='addReply'>回复</span>
                     </div>
                 </div>
             </div>
@@ -51,9 +50,9 @@
                 <div class="author">
                     <p class="head-title">作者</p>
                     <div class="author-info">
-                        <div class="name-wrapper">
+                        <div class="name-wrapper" v-if='content.author'>
                                 <img :src="content.author.avatar_url" alt="">
-                                <span class='name'>{{content.author.loginname}}</span>
+                                <span class='name' >{{content.author.loginname}}</span>
                         </div>
                         <p class='number'>积分：{{authorInfo.score}}</p>
                         <p class='sign'>“ 这家伙很懒，什么个性签名都没有留下。”</p>
@@ -112,24 +111,28 @@ export default {
   components: {HeadContent},
   async created () {
     try {
-      this.itemId = await this.$route.params.id
-      let res = await this.$api.get(`topic/${this.itemId}`)
-      this.content = res.data.data
-      let authorName = this.content.author.loginname
-      let resData = await this.$api.get(`user/${authorName}`)
-      this.authorInfo = resData.data.data
+      this.getInitData()
     } catch (error) {
-
+      console.log(error)
     }
   },
   methods: {
-    onEditorBlur () { // 失去焦点事件
+    async addReply () {
+      await this.$api.post(`topic/${this.itemId}/replies`, {
+        accesstoken: this.existUser,
+        content: this.replyContent
+      })
+      this.getInitData()
+      this.replyContent = ''
     },
-    onEditorFocus () { // 获得焦点事件
-    },
-    onEditorChange () { // 内容改变事件
+    async getInitData () {
+      this.itemId = await this.$route.params.id
+      let res = await this.$api.get(`topic/${this.itemId}`)
+      this.content = res.data.data
+      let authorName = await this.content.author.loginname
+      let resData = await this.$api.get(`user/${authorName}`)
+      this.authorInfo = resData.data.data
     }
-
   },
   computed: {
     originText () {
@@ -142,9 +145,13 @@ export default {
       }
     },
     createTime () {
-      return this.timeago(this.content.create_at)
+      if (this.content.create_at) {
+        return this.timeago(this.content.create_at)
+      }
+    },
+    existUser () {
+      return sessionStorage.getItem('accesstoken')
     }
-
   }
 }
 </script>

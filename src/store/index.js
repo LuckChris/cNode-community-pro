@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import actions from './actions'
 import getters from './getters'
-import Types from './mutation-types'
+// import Types from './mutation-types'
 
 Vue.use(Vuex)
 const store = new Vuex.Store({
@@ -10,10 +10,17 @@ const store = new Vuex.Store({
     isLogin: false
   },
   mutations: {
-    [Types.LOGIN_FLAG] (state) {
+    // 以下两种方法均可
+    // [Types.LOGIN_FLAG] (state) {
+    //   state.isLogin = true
+    // },
+    // [Types.EXIT_FLAG] (state) {
+    //   state.isLogin = false
+    // }
+    hasLogin (state) {
       state.isLogin = true
     },
-    [Types.EXIT_FLAG] (state) {
+    exitLogin (state) {
       state.isLogin = false
     }
   },

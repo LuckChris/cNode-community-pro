@@ -42,7 +42,7 @@
     </div>
 </template>
 <script>
-import Type from '@/store/mutation-types'
+// import Type from '@/store/mutation-types'
 export default {
   data () {
     return {
@@ -91,7 +91,7 @@ export default {
 
     },
     exit () {
-      this.$store.dispatch(Type.EXIT_FLAG)
+      this.$store.commit('exitLogin')
       window.location.reload()
     }
   }
