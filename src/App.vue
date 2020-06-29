@@ -1,12 +1,15 @@
 <template>
   <div id="app">
+    <HeadContent></HeadContent>
     <router-view/>
   </div>
 </template>
 
 <script>
+import HeadContent from '@/components/head'
 export default {
   name: 'App',
+  components:{ HeadContent },
   mounted () {
     window.addEventListener('unload', this.saveState)
   },

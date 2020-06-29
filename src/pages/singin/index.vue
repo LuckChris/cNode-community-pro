@@ -1,6 +1,5 @@
 <template>
   <div class="singin-page">
-    <head-content></head-content>
     <div class="login-content">
       <div class="left-user">
         <p class="title">
@@ -27,10 +26,28 @@
         <p>assess token 是通过github账号关联绑定得到的</p>
       </div>
     </div>
+    <vue-particles
+      color="#FF8C00"
+      :particleOpacity="0.7"
+      :particlesNumber="60"
+      shapeType="star"
+      :particleSize="4"
+      linesColor="#FFF"
+      :linesWidth="2"
+      :lineLinked="true"
+      :lineOpacity="0.4"
+      :linesDistance="150"
+      :moveSpeed="2"
+      :hoverEffect="true"
+      hoverMode="grab"
+      :clickEffect="true"
+      clickMode="push"
+      class="panel"
+    >
+    </vue-particles>
   </div>
 </template>
 <script>
-import HeadContent from '@/components/head'
 // import Bus from '@/components/bus.js'
 // import Type from '@/store/mutation-types'
 export default {
@@ -41,16 +58,14 @@ export default {
       hasLogin: false
     }
   },
-  components: { HeadContent },
   methods: {
     async goLogin () {
       if (!this.userName) {
         window.alert('用户名不能为空')
       } else {
         try {
-          let res = await this.$api.post('accesstoken', {
-            accesstoken: this.userName
-          })
+          let res = await this.$api.post('accesstoken', { accesstoken: this.userName })
+          console.log(res)
           if (res.status === 200) {
             this.hasLogin = true
             this.$store.commit('hasLogin')
@@ -68,9 +83,20 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
+  .panel{
+    width: 100%;
+    min-height: 100vh;
+    // background-size: cover;
+    // background: tomato;
+   // background: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575715137268&di=1ccfe684fd49289a760c17a94129b6e8&imgtype=0&src=http%3A%2F%2Fpic248.nipic.com%2Ffile%2F20191024%2F29412556_214343501083_2.jpg") no-repeat;
+    position: fixed;
+    top: 60px;
+    left:0;
+  }
 .singin-page {
   width: 100%;
+  position: relative;
   .login-content {
     width: 80%;
     margin: 0 auto;
@@ -89,7 +115,8 @@ export default {
     }
     .left-user {
       flex: 3;
-      background-color: #fff;
+       background-color: #fff;
+       z-index: 999;
       .user-info {
         text-align: center;
         padding-top: 40px;

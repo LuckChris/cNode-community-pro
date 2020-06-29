@@ -13,6 +13,11 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
+/* 粒子背景插件 */
+import VueParticles from 'vue-particles'
+
+Vue.use(VueParticles)
+
 Vue.use(VueQuillEditor)
 
 Vue.config.productionTip = false
